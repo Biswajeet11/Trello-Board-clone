@@ -18,7 +18,7 @@ const initialState = [
     },
     {
         title: 'second Episode',
-        id: 0,
+        id: 1,
         cards: [
             {
                 id: 0,
@@ -32,7 +32,7 @@ const initialState = [
     },
     {
         title: 'third Episode',
-        id: 0,
+        id: 3,
         cards: [
             {
                 id: 0,
@@ -53,15 +53,28 @@ const listReducer = (state = initialState, action) => {
                 cards: [],
                 id: listId
             }
-            listId += 1
-            return [...state, newList]
+            listId += 1;
+            return [...state, newList];
 
         case CONSTANTS.ADD_CARD:
             const newCard = {
-                text: action.payload,
+                text: action.payload.text,
                 id: cardId
             }
-            cardId += 1
+            cardId += 1;
+            console.log("action card",action)
+            const newState = state.map(list => {
+                if (list.id === action.payload.listId) {
+                    return {
+                        ...list,
+                        cards: [...list.cards, newCard]
+                    }
+                }
+                else {
+                    return list;
+                }
+            })
+            return newState;
         default:
             return state;
     }

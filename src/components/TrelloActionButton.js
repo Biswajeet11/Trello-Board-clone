@@ -5,6 +5,7 @@ import Card from '@material-ui/core/Card'
 import Button from '@material-ui/core/Button'
 import { connect } from 'react-redux'
 import {addList} from '../actions/listActions'
+import {addCard} from '../actions/cardActions'
 class TrelloActionButton extends React.Component {
 
     state = {
@@ -32,9 +33,19 @@ class TrelloActionButton extends React.Component {
         const { dispatch } = this.props
         const { text } = this.state
         if (text) {
-            dispatch(addList(text))
+         this.setState({text:""}) 
         }
+        dispatch(addList(text))
         return;
+    }
+
+    handleAddCard=()=>{
+        const { dispatch,listId } = this.props
+        const { text } = this.state
+        if(text){
+            this.setState({text:""}) 
+        }
+        dispatch(addCard(listId,text))
     }
 
     renderAddButton = () => {
@@ -86,7 +97,7 @@ class TrelloActionButton extends React.Component {
             </Card>
             <div style={styles.formButtonGroup}>
                 <Button
-                onMouseDown={this.handleAddList}
+                onMouseDown={list?this.handleAddList:this.handleAddCard}
                     variant="contained"
                     style={{ color: "white", backgroundColor: "#5aac44" }}>
                     {buttonTile}{" "}

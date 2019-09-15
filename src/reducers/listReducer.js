@@ -75,6 +75,22 @@ const listReducer = (state = initialState, action) => {
                 }
             })
             return newState;
+        case CONSTANTS.DRAG_HAPPENED: {
+            const { droppableIdStart,
+                droppableIdEnd,
+                droppableIndexStart,
+                droppableIndexEnd,
+                draggableId } = action.payload
+            const newState = [...state]
+
+            //in the same list
+            if (droppableIdStart === droppableIdEnd) {
+                const list = state.find(list => droppableIdStart === list.id)
+                const card = list.cards.splice(droppableIdStart, 1, list.cards.splice(droppableIndexEnd, 0, ...card))
+                return newState
+            }
+        }
+
         default:
             return state;
     }
